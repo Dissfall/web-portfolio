@@ -1,0 +1,544 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Backend Engineer specializing in scalable cloud-based architecture" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav container">
+        <a href="/" class="logo">
+          <span class="accent">HL</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/skills">Skills</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Heorhi Lukyanau</h3>
+            <p>Backend Engineer specializing in scalable cloud-based architecture</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/about">About</a></li>
+              <li><a href="/skills">Skills</a></li>
+              <li><a href="/projects">Projects</a></li>
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <ul>
+              <li><a href="mailto:heorhi@lukyanau.me">Email</a></li>
+              <li><a href="https://www.linkedin.com/in/heorhi-lukyanau/" target="_blank" rel="noopener">LinkedIn</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Heorhi Lukyanau. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Perspective Switcher -->
+    <div id="perspective-switcher" class="perspective-switcher">
+      <button id="collapse-btn" class="collapse-btn" aria-label="Collapse perspective switcher">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="8" x2="12" y2="8"/>
+        </svg>
+      </button>
+      <div class="perspective-pills">
+        <button class="perspective-pill active" data-perspective="all">
+          <span class="pill-icon">🌍</span>
+          <span class="pill-label">All</span>
+        </button>
+        <button class="perspective-pill" data-perspective="backend">
+          <span class="pill-icon">💻</span>
+          <span class="pill-label">Backend Engineering</span>
+        </button>
+        <button class="perspective-pill" data-perspective="making">
+          <span class="pill-icon">⚙️</span>
+          <span class="pill-label">Design/Making</span>
+        </button>
+        <button class="perspective-pill" data-perspective="activism">
+          <span class="pill-icon">🏳️‍🌈</span>
+          <span class="pill-label">Activism</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsed Button -->
+    <button id="expand-btn" class="expand-btn" aria-label="Show perspective switcher" style="display: none;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="10" cy="10" r="8"/>
+        <line x1="10" y1="6" x2="10" y2="14"/>
+        <line x1="6" y1="10" x2="14" y2="10"/>
+      </svg>
+    </button>
+
+    <script is:inline>
+      // Theme toggle
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        themeToggle?.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+
+        mobileMenuToggle?.addEventListener('click', () => {
+          navLinks?.classList.toggle('active');
+          mobileMenuToggle.classList.toggle('active');
+        });
+      });
+    </script>
+
+    <script is:inline>
+      // Perspective Switcher Logic
+      window.addEventListener('DOMContentLoaded', () => {
+        const switcher = document.getElementById('perspective-switcher');
+        const expandBtn = document.getElementById('expand-btn');
+        const collapseBtn = document.getElementById('collapse-btn');
+        const pills = document.querySelectorAll('.perspective-pill');
+        
+        // Load saved perspective
+        const savedPerspective = localStorage.getItem('perspective') || 'all';
+        setActivePerspective(savedPerspective);
+        
+        // Pill click handlers
+        pills.forEach(pill => {
+          pill.addEventListener('click', () => {
+            const perspective = pill.getAttribute('data-perspective');
+            setActivePerspective(perspective);
+            localStorage.setItem('perspective', perspective);
+          });
+        });
+        
+        // Collapse button
+        collapseBtn?.addEventListener('click', () => {
+          switcher.style.display = 'none';
+          expandBtn.style.display = 'flex';
+          localStorage.setItem('switcherCollapsed', 'true');
+        });
+        
+        // Expand button
+        expandBtn?.addEventListener('click', () => {
+          switcher.style.display = 'flex';
+          expandBtn.style.display = 'none';
+          localStorage.setItem('switcherCollapsed', 'false');
+        });
+        
+        // Check if should be collapsed
+        if (localStorage.getItem('switcherCollapsed') === 'true') {
+          switcher.style.display = 'none';
+          expandBtn.style.display = 'flex';
+        }
+        
+        function setActivePerspective(perspective) {
+          // Update active pill
+          pills.forEach(p => p.classList.remove('active'));
+          const activePill = document.querySelector(`[data-perspective="${perspective}"]`);
+          activePill?.classList.add('active');
+          
+          // Filter content elements
+          const contentElements = document.querySelectorAll('[data-perspectives]');
+          contentElements.forEach(element => {
+            const elementPerspectives = element.getAttribute('data-perspectives')?.split(' ') || [];
+            
+            if (perspective === 'all' || elementPerspectives.includes(perspective)) {
+              element.style.display = '';
+              element.style.animation = 'fadeIn 0.5s ease-out';
+            } else {
+              element.style.display = 'none';
+            }
+          });
+        }
+      });
+    </script>
+
+    <style>
+      .header {
+        position: sticky;
+        top: 0;
+        background-color: var(--color-bg);
+        border-bottom: 1px solid var(--color-border);
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+
+      [data-theme="dark"] .header {
+        background-color: rgba(10, 10, 10, 0.9);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--color-yellow);
+      }
+
+      .theme-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        transition: color 0.2s ease;
+      }
+
+      .theme-toggle:hover {
+        color: var(--color-yellow);
+      }
+
+      .sun-icon {
+        display: none;
+      }
+
+      .moon-icon {
+        display: block;
+      }
+
+      [data-theme="dark"] .sun-icon {
+        display: block;
+      }
+
+      [data-theme="dark"] .moon-icon {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      .mobile-menu-toggle span {
+        width: 24px;
+        height: 2px;
+        background-color: var(--color-text);
+        transition: all 0.3s ease;
+      }
+
+      .mobile-menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      .footer {
+        background-color: var(--color-bg-secondary);
+        border-top: 1px solid var(--color-border);
+        padding: 4rem 0 2rem;
+        margin-top: 5rem;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-section h3,
+      .footer-section h4 {
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--color-border);
+      }
+
+      .footer-bottom p {
+        color: var(--color-text-secondary);
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          position: fixed;
+          top: 73px;
+          left: 0;
+          right: 0;
+          background-color: var(--color-bg);
+          flex-direction: column;
+          padding: 2rem;
+          gap: 1.5rem;
+          border-bottom: 1px solid var(--color-border);
+          transform: translateY(-100%);
+          opacity: 0;
+          transition: all 0.3s ease;
+          pointer-events: none;
+        }
+
+        .nav-links.active {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: all;
+        }
+
+        .mobile-menu-toggle {
+          display: flex;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      /* Perspective Switcher */
+      .perspective-switcher {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--color-bg-secondary);
+        border: 2px solid var(--color-border);
+        border-radius: 50px;
+        padding: 0.75rem 1.25rem;
+        box-shadow: 0 8px 32px var(--color-shadow);
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+
+      .collapse-btn {
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        padding: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .collapse-btn:hover {
+        color: var(--color-yellow);
+      }
+
+      .perspective-pills {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .perspective-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: 50px;
+        color: var(--color-text);
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+
+      .perspective-pill:hover {
+        border-color: var(--color-yellow);
+        background: rgba(255, 221, 0, 0.1);
+      }
+
+      .perspective-pill.active {
+        background: var(--color-yellow);
+        border-color: var(--color-yellow);
+        color: var(--color-bg);
+        font-weight: 600;
+      }
+
+      .pill-icon {
+        font-size: 1.125rem;
+        line-height: 1;
+      }
+
+      .expand-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        background: var(--color-yellow);
+        border: none;
+        border-radius: 50%;
+        color: var(--color-bg);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 32px var(--color-shadow);
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+
+      .expand-btn:hover {
+        transform: scale(1.1);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .perspective-switcher {
+          bottom: 1rem;
+          right: 1rem;
+          left: 1rem;
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .perspective-pills {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .perspective-pill {
+          flex: 1;
+          justify-content: center;
+          min-width: 0;
+        }
+
+        .pill-label {
+          display: none;
+        }
+
+        .expand-btn {
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+    </style>
+  </body>
+</html>
+

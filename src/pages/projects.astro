@@ -1,0 +1,285 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+import ProjectContent from '../components/ProjectContent.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const publishedProjects = allProjects
+  .filter(project => !project.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const projectsWithContent = await Promise.all(
+  publishedProjects.map(async (project) => {
+    const { Content } = await project.render();
+    return { project, Content };
+  })
+);
+---
+
+<Layout title="Projects - Heorhi Lukyanau" description="Explore projects and work by Heorhi Lukyanau">
+  <section class="projects-hero section">
+    <div class="container">
+      <h1 class="fade-in">Projects</h1>
+      <p class="lead">
+        A selection of projects I've worked on, showcasing my experience in different domains.
+      </p>
+    </div>
+  </section>
+
+  <section class="projects-section section">
+    <div class="container">
+      <div class="projects-grid">
+        {publishedProjects.map((project) => (
+          <article
+            class="project-card card"
+            data-project-slug={project.slug}
+            role="button"
+            tabindex="0"
+            aria-haspopup="dialog"
+          >
+            {project.data.image && (
+              <div class="project-image-preview">
+                <img src={project.data.image} alt={project.data.title} />
+              </div>
+            )}
+            <div class="project-category accent">{project.data.category}</div>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.description}</p>
+            <div class="project-tech">
+              {project.data.tech.slice(0, 4).map((tech) => (
+                <span class="tech-tag">{tech}</span>
+              ))}
+              {project.data.tech.length > 4 && (
+                <span class="tech-tag">+{project.data.tech.length - 4}</span>
+              )}
+            </div>
+            <span class="view-details">View Details →</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {projectsWithContent.map(({ project, Content }) => (
+    <ProjectModal projectSlug={project.slug} projectTitle={project.data.title}>
+      <ProjectContent project={project} Content={Content} />
+    </ProjectModal>
+  ))}
+
+  <section class="cta-section section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Interested in Working Together?</h2>
+        <p>I'm always open to discussing new projects and opportunities.</p>
+        <a href="/contact" class="btn">Start a Conversation</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function initProjectModals() {
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+    const modals = document.querySelectorAll<HTMLElement>('.project-modal');
+
+    function openModal(slug: string) {
+      const modal = document.getElementById(`modal-${slug}`);
+      if (modal) {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        history.pushState({ project: slug }, '', `?project=${slug}`);
+      }
+    }
+
+    function closeModal(modal: HTMLElement) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      history.pushState({}, '', window.location.pathname);
+    }
+
+    function closeAllModals() {
+      modals.forEach(modal => {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+      });
+      document.body.style.overflow = '';
+    }
+
+    cards.forEach(card => {
+      const handler = () => {
+        const slug = card.dataset.projectSlug;
+        if (slug) openModal(slug);
+      };
+      card.addEventListener('click', handler);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handler();
+        }
+      });
+    });
+
+    modals.forEach(modal => {
+      const closeBtn = modal.querySelector('.modal-close');
+      const backdrop = modal.querySelector('.modal-backdrop');
+
+      closeBtn?.addEventListener('click', () => closeModal(modal));
+      backdrop?.addEventListener('click', () => closeModal(modal));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllModals();
+        history.pushState({}, '', window.location.pathname);
+      }
+    });
+
+    window.addEventListener('popstate', () => {
+      closeAllModals();
+      const params = new URLSearchParams(window.location.search);
+      const projectSlug = params.get('project');
+      if (projectSlug) openModal(projectSlug);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const projectSlug = params.get('project');
+    if (projectSlug) openModal(projectSlug);
+  }
+
+  document.addEventListener('DOMContentLoaded', initProjectModals);
+</script>
+
+<style>
+  .projects-hero {
+    padding-top: 3rem;
+  }
+
+  .projects-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    max-width: 900px;
+    color: var(--color-text-secondary);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .project-image-preview {
+    margin: -2rem -2rem 1.5rem -2rem;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+  }
+
+  .project-image-preview img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-image-preview img {
+    transform: scale(1.05);
+  }
+
+  .project-category {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .project-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-card p {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .view-details {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: var(--color-yellow);
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-radius: 24px;
+    margin: 0 2rem;
+  }
+
+  .cta-content {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .projects-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-content h2 {
+      font-size: 2rem;
+    }
+
+    .cta-content p {
+      font-size: 1.125rem;
+    }
+  }
+</style>

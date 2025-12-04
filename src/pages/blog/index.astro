@@ -1,0 +1,258 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Get unique tags
+const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
+---
+
+<Layout title="Blog - Heorhi Lukyanau" description="Technical articles and insights on backend engineering, cloud architecture, and software development">
+  <section class="blog-hero section">
+    <div class="container">
+      <h1 class="fade-in">Blog</h1>
+      <p class="lead">
+        Technical articles, insights, and lessons learned.
+      </p>
+    </div>
+  </section>
+
+  <section class="blog-section section">
+    <div class="container">
+      {allTags.length > 0 && (
+        <div class="tags-filter">
+          <span class="filter-label">Filter by tag:</span>
+          <div class="tags-list">
+            {allTags.map((tag) => (
+              <button class="tag-button" data-tag={tag}>
+                #{tag}
+              </button>
+            ))}
+            <button class="tag-button active" data-tag="all">
+              All
+            </button>
+          </div>
+        </div>
+      )}
+
+      {publishedPosts.length === 0 ? (
+        <div class="no-posts card">
+          <h3>Coming Soon!</h3>
+          <p>I'm working on some great content. Check back soon for technical articles and insights.</p>
+        </div>
+      ) : (
+        <div class="posts-grid">
+          {publishedPosts.map((post) => (
+            <article class="post-card card" data-tags={post.data.tags.join(',')}>
+              <div class="post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+              <h2>
+                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+              </h2>
+              <p>{post.data.description}</p>
+              {post.data.tags.length > 0 && (
+                <div class="post-tags">
+                  {post.data.tags.map((tag) => (
+                    <span class="post-tag accent">#{tag}</span>
+                  ))}
+                </div>
+              )}
+              <a href={`/blog/${post.slug}`} class="read-more">
+                Read more →
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tagButtons = document.querySelectorAll('.tag-button');
+    const postCards = document.querySelectorAll('.post-card');
+
+    tagButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedTag = button.getAttribute('data-tag');
+        
+        // Update active state
+        tagButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Filter posts
+        postCards.forEach(card => {
+          const cardTags = card.getAttribute('data-tags')?.split(',') || [];
+          
+          if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .blog-hero {
+    padding-top: 3rem;
+  }
+
+  .blog-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    max-width: 900px;
+    color: var(--color-text-secondary);
+  }
+
+  .tags-filter {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  .tags-list {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag-button {
+    padding: 0.5rem 1rem;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+  }
+
+  .tag-button:hover {
+    border-color: var(--color-yellow);
+    color: var(--color-yellow);
+  }
+
+  .tag-button.active {
+    background-color: var(--color-yellow);
+    border-color: var(--color-yellow);
+    color: #000;
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .no-posts h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  }
+
+  .post-meta {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .post-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-card h2 a {
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .post-card h2 a:hover {
+    color: var(--color-yellow);
+  }
+
+  .post-card p {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .post-tag {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .read-more {
+    font-weight: 600;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+    align-self: flex-start;
+  }
+
+  .read-more:hover {
+    color: var(--color-yellow);
+  }
+
+  @media (max-width: 768px) {
+    .blog-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+    }
+
+    .tags-filter {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .post-card h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+

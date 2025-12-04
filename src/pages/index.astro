@@ -1,0 +1,469 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const featuredPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="Heorhi Lukyanau - Engineer, Designer, Activist, Creator">
+  <section class="hero section">
+    <div class="container">
+      <div class="hero-content fade-in">
+        <h1 class="hero-title">
+          Hi, I'm <span class="name-pronunciation">
+            <span class="text-gradient">Heorhi Lukyanau</span>
+            <span class="pronunciation-tooltip">
+              <span class="phonetic">HEH-or-hee loo-KYAH-now</span>
+              <span class="original">Belarusian: Георгій Лук'янаў</span>
+            </span>
+          </span>
+        </h1>
+        <h2 class="hero-subtitle">
+          <span id="rotating-text">Engineer</span>
+        </h2>
+        <p class="hero-description">
+          I apply engineering thinking across domains - from building scalable cloud systems 
+          and APIs, to designing 3D models and physical objects, to creating communities and 
+          advocating for change. Whether it's code, hardware, or social impact, I focus on 
+          creating robust, meaningful solutions.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number accent">5+</span>
+            <span class="stat-label">Years Backend Engineering</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number accent">7+</span>
+            <span class="stat-label">Years Grassroots Activism</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number accent">50+</span>
+            <span class="stat-label">kg of Filament Used</span>
+          </div>
+        </div>
+        <div class="hero-cta">
+          <a href="/contact" class="btn">Get in Touch</a>
+          <a href="/projects" class="btn btn-outline">View Projects</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-preview section">
+    <div class="container">
+      <h2>What I Do</h2>
+      <div class="focus-grid">
+        <div class="focus-card card" data-perspectives="backend">
+          <div class="focus-icon">💻</div>
+          <h3>Code Quality</h3>
+          <p>Using SOLID principles to design understandable and scalable code that stands the test of time.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="backend">
+          <div class="focus-icon">🚀</div>
+          <h3>Scalable Systems</h3>
+          <p>Building cloud-based architectures that work stably with heavy loads, anticipating growth from day one.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="backend">
+          <div class="focus-icon">🔔</div>
+          <h3>Predictability</h3>
+          <p>Setting up robust monitoring and alert systems to catch problems immediately and respond proactively.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="making">
+          <div class="focus-icon">🖨️</div>
+          <h3>3D Design & Fabrication</h3>
+          <p>Creating functional designs and bringing them to life through 3D printing.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="making">
+          <div class="focus-icon">⚙️</div>
+          <h3>Hardware Engineering</h3>
+          <p>Solving problems through design and engineering, from concept to finished product.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="activism">
+          <div class="focus-icon">🏳️‍🌈</div>
+          <h3>Activism</h3>
+          <p>Co-founded Prismatica, a horizontal queer-feminist initiative supporting LGBTQ+ people in Belarus.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="activism">
+          <div class="focus-icon">👥</div>
+          <h3>Volounteering</h3>
+          <p>I am volounteering in different human-rights organizations to support the work that matterf for me.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="activism">
+          <div class="focus-icon">📢</div>
+          <h3>Advocacy & Education</h3>
+          <p>Creating safe spaces and educational programs to reduce stigma and promote inclusion and human rights.</p>
+        </div>
+        <div class="focus-card card" data-perspectives="backend making activism">
+          <div class="focus-icon">🔧</div>
+          <h3>Systems Thinking</h3>
+          <p>Applying engineering mindset across domains - whether building software, objects, or communities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {featuredPosts.length > 0 && (
+    <section class="blog-preview section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Latest from the Blog</h2>
+          <a href="/blog" class="view-all">View All →</a>
+        </div>
+        <div class="blog-grid">
+          {featuredPosts.map((post) => (
+            <article class="blog-card card">
+              <div class="blog-meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </time>
+                {post.data.tags.length > 0 && (
+                  <span class="blog-tag accent">#{post.data.tags[0]}</span>
+                )}
+              </div>
+              <h3>
+                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+              </h3>
+              <p>{post.data.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="cta-section section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Let's Build Something Great</h2>
+        <p>I'm always interested in hearing about new projects and opportunities.</p>
+        <a href="/contact" class="btn">Start a Conversation</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const words = ['Engineer', 'Designer', 'Activist', 'Creator'];
+  let currentIndex = 0;
+  
+  function rotateText() {
+    const textElement = document.getElementById('rotating-text');
+    if (!textElement) return;
+    
+    // Fade out
+    textElement.style.opacity = '0';
+    
+    setTimeout(() => {
+      // Change text
+      currentIndex = (currentIndex + 1) % words.length;
+      textElement.textContent = words[currentIndex];
+      
+      // Fade in
+      textElement.style.opacity = '1';
+    }, 500);
+  }
+  
+  // Start rotation after page load
+  window.addEventListener('DOMContentLoaded', () => {
+    setInterval(rotateText, 3000); // Change every 3 seconds
+  });
+</script>
+
+<style>
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+  }
+
+  .hero-content {
+    max-width: 800px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .name-pronunciation {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+
+  .pronunciation-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background-color: var(--color-bg-secondary);
+    border: 2px solid var(--color-yellow);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 1001;
+    box-shadow: 0 8px 24px var(--color-shadow);
+  }
+
+  .name-pronunciation:hover .pronunciation-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-20px);
+  }
+
+  .pronunciation-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--color-yellow);
+  }
+
+  .phonetic {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-yellow);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .original {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+  }
+
+  .hero-subtitle {
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+
+  #rotating-text {
+    display: inline-block;
+    transition: opacity 0.5s ease-in-out;
+    min-width: 200px;
+    text-align: left;
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 700px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .focus-card {
+    text-align: center;
+  }
+
+  .focus-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .focus-card h3 {
+    margin-bottom: 1rem;
+  }
+
+  .focus-card p {
+    margin: 0;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .view-all {
+    font-weight: 600;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .view-all:hover {
+    color: var(--color-yellow);
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .blog-tag {
+    font-weight: 600;
+  }
+
+  .blog-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+  }
+
+  .blog-card h3 a {
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .blog-card h3 a:hover {
+    color: var(--color-yellow);
+  }
+
+  .blog-card p {
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-radius: 24px;
+    margin: 0 2rem;
+  }
+
+  .cta-content {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .pronunciation-tooltip {
+      white-space: normal;
+      max-width: 280px;
+      text-align: center;
+    }
+
+    .phonetic {
+      font-size: 1rem;
+    }
+
+    .original {
+      font-size: 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+    }
+
+    .hero-stats {
+      gap: 2rem;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+
+    .focus-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .cta-content h2 {
+      font-size: 2rem;
+    }
+
+    .cta-content p {
+      font-size: 1.125rem;
+    }
+  }
+
+</style>
+

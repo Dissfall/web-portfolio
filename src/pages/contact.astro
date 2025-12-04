@@ -1,0 +1,321 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact - Heorhi Lukyanau" description="Get in touch with Heorhi Lukyanau">
+  <section class="contact-hero section">
+    <div class="container">
+      <h1 class="fade-in">Get in Touch</h1>
+      <p class="lead">
+        I'm always interested in hearing about new projects, opportunities, or just having a chat 
+        about technology and backend engineering.
+      </p>
+    </div>
+  </section>
+
+  <section class="contact-section section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Contact Information</h2>
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">📧</div>
+              <div class="info-content">
+                <h3>Email</h3>
+                <a href="mailto:heorhi@lukyanau.me">heorhi@lukyanau.me</a>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">💼</div>
+              <div class="info-content">
+                <h3>LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/heorhi-lukyanau/" target="_blank" rel="noopener">
+                  heorhi-lukyanau
+                </a>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">🌍</div>
+              <div class="info-content">
+                <h3>Languages</h3>
+                <p>Belarusian (Native), Russian (Native), English (B1)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="resume-download">
+            <h3>Download Resume</h3>
+            <p>Technical resume focused on backend engineering. Does not include my activism work and other spheres.</p>
+            <a href="/Heorhi_backend_engineer.pdf" download class="btn btn-outline">
+              Download PDF
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-form-container card">
+          <h2>Send a Message</h2>
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <label for="name">Name *</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required 
+                placeholder="Your name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                placeholder="your.email@example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject *</label>
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject" 
+                required 
+                placeholder="What's this about?"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                required 
+                rows="6"
+                placeholder="Tell me about your project or inquiry..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn">Send Message</button>
+            
+            <div id="form-status" class="form-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const status = document.getElementById('form-status') as HTMLDivElement;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+      };
+
+      // Show loading state
+      status.textContent = 'Sending message...';
+      status.className = 'form-status info';
+      
+      // Simulate form submission (replace with actual API call)
+      setTimeout(() => {
+        // For now, just show success message and compose email
+        const mailtoLink = `mailto:heorhi@lukyanau.me?subject=${encodeURIComponent(data.subject as string)}&body=${encodeURIComponent(`From: ${data.name} (${data.email})\n\n${data.message}`)}`;
+        
+        window.location.href = mailtoLink;
+        
+        status.textContent = 'Opening your email client...';
+        status.className = 'form-status success';
+        
+        form.reset();
+      }, 500);
+    });
+  });
+</script>
+
+<style>
+  .contact-hero {
+    padding-top: 3rem;
+  }
+
+  .contact-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    max-width: 900px;
+    color: var(--color-text-secondary);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-info h2 {
+    margin-bottom: 2rem;
+  }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .info-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .info-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .info-content h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .info-content a {
+    color: var(--color-text);
+    font-size: 1.125rem;
+    transition: color 0.2s ease;
+  }
+
+  .info-content a:hover {
+    color: var(--color-yellow);
+  }
+
+  .info-content p {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  .resume-download {
+    padding: 2rem;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .resume-download h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .resume-download p {
+    margin-bottom: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .contact-form-container {
+    padding: 2.5rem;
+  }
+
+  .contact-form-container h2 {
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-yellow);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-status {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .form-status.info {
+    background-color: rgba(255, 221, 0, 0.1);
+    color: var(--color-yellow);
+  }
+
+  .form-status.success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+  }
+
+  .form-status.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+
+  @media (max-width: 968px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+    }
+
+    .contact-form-container {
+      padding: 2rem;
+    }
+  }
+</style>
+

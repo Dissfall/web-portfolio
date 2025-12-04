@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectContent from '../../components/ProjectContent.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: project,
+  }));
+}
+
+const project = Astro.props;
+const { Content } = await project.render();
+---
+
+<Layout title={`${project.data.title} - Projects - Heorhi Lukyanau`} description={project.data.description}>
+  <div class="project-page section">
+    <div class="container-narrow">
+      <a href="/projects" class="back-link">← Back to Projects</a>
+      <ProjectContent project={project} Content={Content} />
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container-narrow {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-yellow);
+  }
+
+  @media (max-width: 768px) {
+    .container-narrow {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>

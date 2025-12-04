@@ -1,0 +1,536 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Skills - Heorhi Lukyanau" description="Skills and expertise across engineering, design, and activism">
+  <section class="skills-hero section">
+    <div class="container">
+      <h1 class="fade-in">Skills & Expertise</h1>
+      <p class="lead">
+        A comprehensive overview of my skills across different domains - from technical engineering 
+        to physical making to community organizing.
+      </p>
+    </div>
+  </section>
+
+  <!-- Backend Engineering Skills -->
+  <section class="main-skills section" data-perspectives="backend">
+    <div class="container">
+      <h2>💻 Backend Engineering Skills</h2>
+      <div class="main-skills-grid">
+        <div class="skill-card card">
+          <div class="skill-icon">🏗️</div>
+          <h3>Cloud Architecture</h3>
+          <p>Designing scalable, resilient systems on AWS with focus on high availability and performance.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🔌</div>
+          <h3>API Design</h3>
+          <p>Creating RESTful and real-time APIs that serve web, mobile, and IoT applications efficiently.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">✅</div>
+          <h3>Test-Driven Development</h3>
+          <p>Writing comprehensive tests that ensure code quality and enable confident refactoring.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🚀</div>
+          <h3>CI/CD</h3>
+          <p>Implementing automated pipelines for testing, building, and deploying applications reliably.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">📊</div>
+          <h3>Load Testing</h3>
+          <p>Stress-testing systems to identify bottlenecks and ensure performance under heavy load.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tech-skills section" data-perspectives="backend">
+    <div class="container">
+      <h2>Technical Experience Timeline</h2>
+      <p class="section-description">
+        Years of hands-on experience with various technologies and tools.
+      </p>
+      <div class="chart-container">
+        <canvas id="skillsChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills-categories section" data-perspectives="backend">
+    <div class="container">
+      <h2>Technology Stack</h2>
+      <div class="categories-grid">
+        <div class="category-card card">
+          <h3 class="accent">Backend & Runtime</h3>
+          <ul>
+            <li><strong>Node.js</strong> - 5 years</li>
+            <li><strong>JavaScript / TypeScript</strong> - 5 years</li>
+          </ul>
+        </div>
+        
+        <div class="category-card card">
+          <h3 class="accent">Cloud & Infrastructure</h3>
+          <ul>
+            <li><strong>AWS</strong> - 4 years</li>
+            <li><strong>Docker</strong> - 3 years</li>
+            <li><strong>Linux Server Maintenance</strong> - 5 years</li>
+          </ul>
+        </div>
+        
+        <div class="category-card card">
+          <h3 class="accent">Databases</h3>
+          <ul>
+            <li><strong>MongoDB</strong> - 4 years</li>
+            <li><strong>Redis</strong> - 2 years</li>
+          </ul>
+        </div>
+        
+        <div class="category-card card">
+          <h3 class="accent">Real-time & Communication</h3>
+          <ul>
+            <li><strong>Socket.io</strong> - 2 years</li>
+          </ul>
+        </div>
+        
+        <div class="category-card card">
+          <h3 class="accent">DevOps & Automation</h3>
+          <ul>
+            <li><strong>CI/CD Pipelines</strong> - 4 years</li>
+            <li><strong>Infrastructure as Code</strong></li>
+            <li><strong>Monitoring & Alerting</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design/Making Skills -->
+  <section class="making-skills section" data-perspectives="making">
+    <div class="container">
+      <h2>⚙️ Design & Making Skills</h2>
+      
+      <div class="skills-intro card">
+        <p>
+          A lot time spent in creating functional designs and prototypes. 
+          Built a 3D printer from scratch, combining mechanical engineering, electronics, and firmware development.
+          Now I'm working on my slicer implementation.
+        </p>
+      </div>
+
+      <div class="main-skills-grid">
+        <div class="skill-card card">
+          <div class="skill-icon">🖨️</div>
+          <h3>3D Printing</h3>
+          <p>FDM printing, material selection, slicing optimization, printer calibration and maintenance.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">📐</div>
+          <h3>CAD Design</h3>
+          <p>Creating functional 3D models for printing, focusing on practical, real-world applications.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🔧</div>
+          <h3>Hardware Assembly</h3>
+          <p>Building and modifying physical systems, understanding mechanics and electronics integration.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🔬</div>
+          <h3>Iterative Design</h3>
+          <p>Rapid prototyping, testing, and refinement - learning from each iteration to improve designs.</p>
+        </div>
+      </div>
+
+      <div class="tools-section">
+        <h3>Tools & Technologies</h3>
+        <div class="tools-tags">
+          <span class="tool-tag">FDM 3D Printing</span>
+          <span class="tool-tag">PLA/PETG/ABS</span>
+          <span class="tool-tag">Slicing Software</span>
+          <span class="tool-tag">Mechanical Design</span>
+          <span class="tool-tag">Electronics Basics</span>
+          <span class="tool-tag">Firmware Configuration</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activism Skills -->
+  <section class="activism-skills section" data-perspectives="activism">
+    <div class="container">
+      <h2>🏳️‍🌈 Community & Activism Skills</h2>
+      
+      <div class="skills-intro card">
+        <p>
+          <strong>7+ years of grassroots activism</strong> as co-founder of Prismatica, 
+          building and sustaining LGBTQ+ community in challenging environments.
+        </p>
+      </div>
+
+      <div class="main-skills-grid">
+        <div class="skill-card card">
+          <div class="skill-icon">🤝</div>
+          <h3>Community Organizing</h3>
+          <p>Building inclusive communities, creating safe spaces, and fostering belonging for marginalized groups.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">⚖️</div>
+          <h3>Horizontal Leadership</h3>
+          <p>Facilitating consensus-based decision making, working without hierarchies, empowering all voices.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">📚</div>
+          <h3>Education & Advocacy</h3>
+          <p>Designing and delivering educational programs, workshops, and events to reduce stigma and discrimination.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🔐</div>
+          <h3>Digital and Physical Security Consulting</h3>
+          <p>I am managin all security related tasks in our organization. Consulting other organizations.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">🎯</div>
+          <h3>Event Planning</h3>
+          <p>Organizing cultural and educational events, managing logistics, creating engaging experiences.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">💬</div>
+          <h3>Strategic Communication</h3>
+          <p>Crafting messaging for diverse audiences, managing social media, building organizational voice.</p>
+        </div>
+        <div class="skill-card card">
+          <div class="skill-icon">💰</div>
+          <h3>Fundraising</h3>
+          <p>Securing resources for non-profit work, grant writing, donor relations, financial sustainability.</p>
+        </div>
+      </div>
+
+      <div class="tools-section">
+        <h3>Core Competencies</h3>
+        <div class="tools-tags">
+          <span class="tool-tag">Intersectional Approach</span>
+          <span class="tool-tag">Consensus Building</span>
+          <span class="tool-tag">Conflict Resolution</span>
+          <span class="tool-tag">Volunteer Management</span>
+          <span class="tool-tag">Crisis Response</span>
+          <span class="tool-tag">Digital & Physical Security</span>
+          <span class="tool-tag">Trauma-Informed Practice</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Universal CTA -->
+  <section class="cta-section section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Let's Collaborate</h2>
+        <p>Interested in working together across any of these domains?</p>
+        <a href="/contact" class="btn">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('skillsChart') as HTMLCanvasElement;
+    if (!ctx) return;
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#ffffff' : '#1a1a1a';
+    const gridColor = isDark ? '#2a2a2a' : '#e5e5e5';
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Node.js', 'JavaScript/TS', 'AWS', 'MongoDB', 'CI/CD', 'Linux', 'Docker', 'Redis', 'Socket.io'],
+        datasets: [{
+          label: 'Years of Experience',
+          data: [5, 5, 4, 4, 4, 5, 3, 2, 2],
+          backgroundColor: '#ffdd00',
+          borderColor: '#ffdd00',
+          borderWidth: 2,
+          borderRadius: 8,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+            titleColor: textColor,
+            bodyColor: textColor,
+            borderColor: '#ffdd00',
+            borderWidth: 1,
+            padding: 12,
+            displayColors: false,
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + ' years of experience';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 6,
+            ticks: {
+              stepSize: 1,
+              color: textColor,
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              color: gridColor
+            },
+            border: {
+              display: false
+            }
+          },
+          x: {
+            ticks: {
+              color: textColor,
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            },
+            border: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Update chart colors on theme change
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          const textColor = isDark ? '#ffffff' : '#1a1a1a';
+          const gridColor = isDark ? '#2a2a2a' : '#e5e5e5';
+          
+          if (chart.options.scales?.y && chart.options.scales?.x) {
+            chart.options.scales.y.ticks!.color = textColor;
+            chart.options.scales.x.ticks!.color = textColor;
+            chart.options.scales.y.grid!.color = gridColor;
+            chart.options.plugins!.tooltip!.backgroundColor = isDark ? '#1a1a1a' : '#ffffff';
+            chart.options.plugins!.tooltip!.titleColor = textColor;
+            chart.options.plugins!.tooltip!.bodyColor = textColor;
+            chart.update();
+          }
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+  });
+</script>
+
+<style>
+  .skills-hero {
+    padding-top: 6rem;
+  }
+
+  .skills-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    max-width: 800px;
+    color: var(--color-text-secondary);
+  }
+
+  .section-description {
+    text-align: center;
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 3rem;
+  }
+
+  .skills-intro {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .skills-intro p {
+    font-size: 1.125rem;
+    margin: 0;
+    line-height: 1.8;
+  }
+
+  .main-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .skill-card {
+    text-align: center;
+  }
+
+  .skill-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .skill-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .skill-card p {
+    margin: 0;
+  }
+
+  .chart-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--color-bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .category-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-yellow);
+  }
+
+  .category-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .category-card li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .category-card li:last-child {
+    border-bottom: none;
+  }
+
+  .category-card strong {
+    color: var(--color-text);
+  }
+
+  .tools-section {
+    margin-top: 4rem;
+  }
+
+  .tools-section h3 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .tools-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .tool-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-radius: 24px;
+    margin: 0 2rem;
+  }
+
+  .cta-content {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .skills-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .lead {
+      font-size: 1.125rem;
+    }
+
+    .main-skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+      padding: 1rem;
+    }
+
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tools-tags {
+      gap: 0.5rem;
+    }
+
+    .tool-tag {
+      font-size: 0.8125rem;
+      padding: 0.4rem 0.875rem;
+    }
+
+    .cta-content h2 {
+      font-size: 2rem;
+    }
+
+    .cta-content p {
+      font-size: 1.125rem;
+    }
+  }
+</style>
+
