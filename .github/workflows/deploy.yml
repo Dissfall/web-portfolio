@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -26,6 +25,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set image name to lowercase
+        id: image
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -49,7 +52,7 @@ jobs:
           context: .
           push: true
           platforms: ${{ matrix.platform }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.platform.outputs.suffix }}
+          tags: ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ steps.platform.outputs.suffix }}
           cache-from: type=gha,scope=${{ matrix.platform }}
           cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
 
@@ -61,6 +64,10 @@ jobs:
       packages: write
 
     steps:
+      - name: Set image name to lowercase
+        id: image
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -73,9 +80,9 @@ jobs:
 
       - name: Create and push multi-arch manifest
         run: |
-          docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:amd64 \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64
-          docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:amd64 \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64
+          docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:latest \
+            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:amd64 \
+            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:arm64
+          docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ github.sha }} \
+            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:amd64 \
+            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:arm64
