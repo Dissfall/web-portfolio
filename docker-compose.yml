@@ -1,6 +1,6 @@
 services:
   portfolio:
-    image: ghcr.io/dissfall/heorhi-portfolio:latest
+    image: ghcr.io/dissfall/web-portfolio:latest
     container_name: heorhi-portfolio
     restart: unless-stopped
     ports:
